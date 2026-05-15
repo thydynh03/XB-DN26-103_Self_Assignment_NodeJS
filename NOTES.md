@@ -1,4 +1,7 @@
 # NOTES — Express → AWS Lambda Migration
+![AWS Lambda Function Overview — byol-node-express with API Gateway trigger](lambda_apigateway.png)
+
+> **Figure: Lambda Function Overview** — The AWS Console showing the deployed `byol-node-express` Lambda function in the `us-west-2` (Oregon) region. The **Function overview** diagram illustrates the architecture: an **API Gateway** trigger (with 2 routes) forwards HTTP requests to the `byol-node-express` Lambda function. The **Configuration → Triggers** panel below confirms the API Gateway endpoint URL (`https://7exc1p9qc8.execute-api.us-west-2.amazonaws.com/*`), which serves as the public entry point for all Express routes. The function ARN (`arn:aws:lambda:us-west-2:689916825005:function:byol-node-express`) and its association with the `byol-node-express` SAM application are also visible in the details panel.
 
 ## Strategy: `serverless-http` (Option A)
 
