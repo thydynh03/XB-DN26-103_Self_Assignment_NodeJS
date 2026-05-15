@@ -42,6 +42,26 @@ Lambda Web Adapter (Option C) is appealing for zero JS changes, but it pays for 
 - **D — Roll your own**: Educational, but 30-80 lines of hand-written event translation is fragile (path stripping, multi-value headers, binary content types). Not worth it for a production-grade result.
 
 ### Cold Start Measurement
+![alt text](coldstart_image.png)
+
+#### What is Cold Start?
+
+When a Lambda function is invoked **for the first time** (or after a period of inactivity), AWS needs to:
+
+1. **Create a new container** — allocate 512 MB RAM (per `MemorySize` in `template.yaml`)
+2. **Start the Node.js 22 runtime** (per `Runtime: nodejs22.x`)
+3. **Execute `lambda.js`** (per `Handler: lambda.handler`) — loads `serverless-http` + `express` app
+4. **Process the request** — returns a JSON response
+
+Steps 1→3 constitute the **cold start**, recorded by AWS as `Init Duration` in the CloudWatch Logs `REPORT` line.
+
+#### CloudWatch REPORT Explained
+
+The screenshot above shows 5 Lambda invocations:
+
+- **Line 1 (cold):** Contains `Init Duration: 256.54 ms` — this is the cold start. `Billed Duration: 284 ms` = Init (257ms) + Duration (27ms). AWS charges for both initialization and execution time.
+- **Lines 2–5 (warm):** No `Init Duration` — the container already exists from the previous invocation, taking only 2–37 ms to process requests.
+- **`XRAY TraceId`:** AWS X-Ray tracing data (enabled by `Tracing: Active` in template), used for performance debugging.
 
 > Measured from CloudWatch `REPORT` lines (`Init Duration` field), `us-west-2`, `arm64`, `512 MB`.
 
@@ -50,6 +70,10 @@ Lambda Web Adapter (Option C) is appealing for zero JS changes, but it pays for 
 | 1st (cold) | 256.54 ms | 26.75 ms | 284 ms | 93 MB |
 | 2nd (warm) | — | 22.75 ms | 23 ms | 93 MB |
 | 3rd (warm) | — | 8.37 ms | 9 ms | 93 MB |
+
+#### Conclusion
+
+A cold start of **256 ms** is excellent for Express on Lambda — confirming that `serverless-http` is a lightweight adapter with near-zero overhead. The app uses only 93/512 MB RAM, indicating that `MemorySize` could be reduced to 256 MB to save costs if needed.
 
 > **How to force a new cold start:** change `MemorySize` in `template.yaml` by 1 MB, redeploy, then invoke.
 
