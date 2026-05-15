@@ -31,7 +31,7 @@ Resources:
       # TODO: which file exports a Lambda handler? Format: "<file-without-ext>.<exported-name>"
       #   serverless-http  → typically "lambda.handler" (you create lambda.js)
       #   Web Adapter      → "run.sh" (set executable bit) with Layers + AWS_LWA_PORT=3000
-      Handler: TODO_FILL_IN
+      Handler: lambda.handler
       Tracing: Active
       # TODO (Web Adapter route only): uncomment + pick the Layer ARN for your region+arch.
       # Public ARNs: https://github.com/awslabs/aws-lambda-web-adapter/releases
