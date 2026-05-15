@@ -27,10 +27,10 @@ API Gateway event ──► serverless-http ──► Express router ──► J
 | Decision factor | `serverless-http` | Alternatives |
 |---|---|---|
 | **Lines of JS changed** | 3 | `@vendia`: 3 · Web Adapter: 0 · DIY: 30-80 |
-| **Touches `app.js`?** | ❌ No | All options keep it clean |
+| **Touches `app.js`?** | X No | All options keep it clean |
 | **New npm deps** | 1 (~50 KB) | `@vendia`: 1 (~200 KB) · Adapter: 0 (Layer) · DIY: 0 |
 | **Cold-start overhead** | Negligible — thin wrapper | Web Adapter adds ~200 ms (starts real HTTP server) |
-| **Production track record** | 2.5 k ⭐ / widely adopted | `@vendia` maintained by a single startup |
+| **Production track record** | 2.5 k  / widely adopted | `@vendia` maintained by a single startup |
 
 **In short:** `serverless-http` gave the best ratio of *effort vs. cold-start performance*.  
 Lambda Web Adapter (Option C) is appealing for zero JS changes, but it pays for that convenience with a heavier cold start because it boots a real HTTP server inside the sandbox then reverse-proxies into it.
