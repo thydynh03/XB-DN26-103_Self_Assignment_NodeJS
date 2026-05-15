@@ -1,5 +1,7 @@
 # Node.js + Express — BYOL starter (NOT YET SERVERLESS)
 
+[![📝 Migration Notes](https://img.shields.io/badge/📝_Migration_Notes-NOTES.md-blue?style=for-the-badge)](./NOTES.md) [![🚀 Live API](https://img.shields.io/badge/🚀_Live_API-API_Gateway-green?style=for-the-badge)](https://7exc1p9qc8.execute-api.us-west-2.amazonaws.com)
+
 This is a plain Express app. It runs locally as a normal Node HTTP server.
 **It does not run on Lambda yet.** Your group's job is to make it run on
 Lambda with the **minimum** code/config changes.
